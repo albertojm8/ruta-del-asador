@@ -1,0 +1,681 @@
+/* Ruta del Asador — wine-red + cream editorial system
+   Fraunces (display serif) + Jost (geometric sans) */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Jost:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --wine: #7c1a1c;
+  --wine-dark: #5c1214;
+  --cream: #f5ecdf;
+  --cream-warm: #efe1cd;
+  --ink: #1a1210;
+  --white: #fffaf3;
+  --gold: #c99a4b;
+
+  --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --sans: 'Jost', 'Century Gothic', Futura, sans-serif;
+
+  --gap: clamp(1.25rem, 3vw, 3rem);
+  --section-pad: clamp(4rem, 9vw, 8rem);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  color: var(--ink);
+  background: var(--cream);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img { max-width: 100%; display: block; }
+
+a { color: inherit; text-decoration: none; }
+
+.eyebrow {
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+h1, h2, h3 {
+  font-family: var(--serif);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1.08;
+}
+
+h2 { font-size: clamp(2rem, 4vw, 3.2rem); }
+h3 { font-size: clamp(1.3rem, 2vw, 1.7rem); font-weight: 500; }
+
+p { font-size: 1.02rem; }
+
+.container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 5vw, 3rem);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.95rem 1.9rem;
+  border-radius: 999px;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
+}
+.btn:hover { transform: translateY(-2px); }
+
+.btn-solid-wine { background: var(--wine); color: var(--white); border-color: var(--wine); }
+.btn-solid-wine:hover { background: var(--wine-dark); border-color: var(--wine-dark); }
+
+.btn-outline-white { background: transparent; color: var(--white); border-color: rgba(255,250,243,0.65); }
+.btn-outline-white:hover { background: var(--white); color: var(--wine); border-color: var(--white); }
+
+.btn-outline-wine { background: transparent; color: var(--wine); border-color: var(--wine); }
+.btn-outline-wine:hover { background: var(--wine); color: var(--white); }
+
+.btn-solid-cream { background: var(--cream); color: var(--wine); border-color: var(--cream); }
+.btn-solid-cream:hover { background: var(--white); }
+
+/* ---------- NAV ---------- */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem clamp(1.25rem, 5vw, 3rem);
+  background: transparent;
+  transition: background 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease;
+}
+.nav.scrolled {
+  background: rgba(124, 26, 28, 0.96);
+  padding-top: 0.7rem;
+  padding-bottom: 0.7rem;
+}
+
+.nav-wordmark {
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  letter-spacing: 0.03em;
+  color: var(--white);
+}
+.nav-wordmark span { color: var(--gold); }
+
+.nav-links {
+  display: flex;
+  gap: 2.1rem;
+  list-style: none;
+}
+.nav-links a {
+  color: var(--white);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.9;
+  transition: opacity 0.2s ease;
+}
+.nav-links a:hover { opacity: 1; }
+
+.nav-actions { display: flex; gap: 0.8rem; align-items: center; }
+
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.4rem;
+}
+.nav-toggle span {
+  width: 24px; height: 2px; background: var(--white); display: block;
+}
+
+.nav-mobile-panel {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: var(--wine);
+  z-index: 99;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+.nav-mobile-panel.open { display: flex; }
+.nav-mobile-panel a {
+  color: var(--white);
+  font-family: var(--serif);
+  font-size: 1.6rem;
+}
+
+/* ---------- HERO ---------- */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(15,8,7,0.35) 0%, rgba(15,8,7,0.55) 55%, rgba(15,8,7,0.8) 100%),
+              url('../assets/img/hero-restaurant-interior.jpg') center 30%/cover no-repeat;
+}
+.hero-content {
+  color: var(--white);
+  padding: 0 1.5rem;
+  max-width: 780px;
+}
+.hero-content .eyebrow { color: var(--gold); margin-bottom: 1.2rem; display: block; }
+.hero-content h1 {
+  font-size: clamp(2.6rem, 7vw, 5.2rem);
+  margin-bottom: 1.4rem;
+}
+.hero-content p {
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  opacity: 0.92;
+  max-width: 540px;
+  margin: 0 auto 2.4rem;
+}
+.hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+.hero-scroll {
+  position: absolute;
+  bottom: 2.2rem; left: 50%;
+  transform: translateX(-50%);
+  color: var(--white);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.75;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+.hero-scroll::after {
+  content: '';
+  width: 1px; height: 32px;
+  background: rgba(255,250,243,0.6);
+  animation: scrollLine 1.8s ease-in-out infinite;
+}
+@keyframes scrollLine {
+  0% { transform: scaleY(0); transform-origin: top; }
+  50% { transform: scaleY(1); transform-origin: top; }
+  50.01% { transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+/* ---------- SECTION SHELLS ---------- */
+.section { padding: var(--section-pad) 0; position: relative; }
+.section-wine { background: var(--wine); color: var(--white); }
+.section-cream { background: var(--cream); color: var(--ink); }
+.section-dark { background: var(--ink); color: var(--white); }
+
+.section-header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto clamp(2.5rem, 5vw, 4rem);
+}
+.section-header .eyebrow { display: block; margin-bottom: 0.9rem; }
+.section-wine .eyebrow { color: var(--gold); }
+.section-cream .eyebrow { color: var(--wine); }
+.section-header p { margin-top: 1rem; opacity: 0.85; }
+
+/* ---------- STORY (split + cross mosaic) ---------- */
+#historia { overflow: hidden; }
+#historia::before {
+  content: '';
+  position: absolute;
+  left: -4%;
+  bottom: -10%;
+  width: clamp(260px, 30vw, 460px);
+  aspect-ratio: 1 / 1;
+  background: url('../assets/img/logo_big.png') no-repeat left bottom / contain;
+  opacity: 0.07;
+  pointer-events: none;
+  z-index: 0;
+}
+.story {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1.05fr;
+  gap: clamp(2.5rem, 6vw, 5rem);
+  align-items: center;
+}
+.story-text .eyebrow { color: var(--gold); display: block; margin-bottom: 1rem; }
+.story-text h2 { margin-bottom: 1.4rem; }
+.story-text p { opacity: 0.9; margin-bottom: 1.6rem; max-width: 46ch; }
+.story-link {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-size: 0.85rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  border-bottom: 1px solid var(--gold); color: var(--white); padding-bottom: 0.3rem;
+}
+
+.mosaic {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  gap: 0.9rem;
+  aspect-ratio: 1 / 1;
+}
+.mosaic img { width: 100%; height: 100%; object-fit: cover; }
+.mosaic .m1 { grid-column: 1 / 3; grid-row: 1 / 2; }
+.mosaic .m2 { grid-column: 3 / 4; grid-row: 1 / 3; }
+.mosaic .m3 { grid-column: 1 / 2; grid-row: 2 / 4; }
+.mosaic .m4 { grid-column: 2 / 4; grid-row: 3 / 4; }
+.mosaic .m5 {
+  grid-column: 2 / 3; grid-row: 2 / 3;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mosaic .m5-video video {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.mosaic .m5-label {
+  position: relative;
+  z-index: 1;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.6rem;
+  color: rgba(255,250,243,0.9);
+  text-shadow: 0 2px 10px rgba(0,0,0,0.65);
+  pointer-events: none;
+}
+
+/* ---------- CARTA ---------- */
+.carta {
+  background: linear-gradient(180deg, rgba(15,8,7,0.55), rgba(15,8,7,0.78)),
+              url('../assets/img/carta-bg-carne.jpg') center/cover no-repeat;
+  color: var(--white);
+}
+.carta .section-header .eyebrow { color: var(--gold); }
+.carta-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(1.25rem, 3vw, 2rem);
+}
+.carta-card {
+  background: var(--cream);
+  color: var(--ink);
+  padding: clamp(2rem, 3vw, 2.6rem) clamp(1.5rem, 2.5vw, 2rem);
+  text-align: center;
+}
+.carta-card .num {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--wine);
+  font-size: 0.95rem;
+  margin-bottom: 0.8rem;
+  display: block;
+}
+.carta-card h3 { color: var(--wine); margin-bottom: 0.8rem; letter-spacing: 0.02em; }
+.carta-card p { font-size: 0.92rem; opacity: 0.8; }
+.carta-cta { text-align: center; margin-top: clamp(2.5rem, 5vw, 3.5rem); }
+
+/* ---------- BODEGUITA (dotted ring band) ---------- */
+.bodeguita {
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.bodeguita::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 900px; height: 900px;
+  transform: translate(-50%, -50%);
+  background-image: radial-gradient(circle, transparent 0, transparent 40px, rgba(255,250,243,0.09) 41px, rgba(255,250,243,0.09) 42px, transparent 43px),
+                     radial-gradient(circle, transparent 0, transparent 140px, rgba(255,250,243,0.07) 141px, rgba(255,250,243,0.07) 142px, transparent 143px),
+                     radial-gradient(circle, transparent 0, transparent 240px, rgba(255,250,243,0.05) 241px, rgba(255,250,243,0.05) 242px, transparent 243px),
+                     radial-gradient(circle, transparent 0, transparent 340px, rgba(255,250,243,0.04) 341px, rgba(255,250,243,0.04) 342px, transparent 343px);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.bodeguita-content { position: relative; z-index: 2; max-width: 620px; margin: 0 auto; }
+.bodeguita .eyebrow { color: var(--gold); display: block; margin-bottom: 1rem; }
+.bodeguita h2 { margin-bottom: 1.3rem; }
+.bodeguita p { opacity: 0.9; margin-bottom: 2rem; }
+
+/* ---------- RINCON VIP ---------- */
+.vip-intro {
+  max-width: 640px;
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+.vip-intro .eyebrow { color: var(--wine); display: block; margin-bottom: 1rem; }
+.vip-intro h2 { color: var(--wine); margin-bottom: 1.2rem; }
+.vip-intro p { opacity: 0.85; max-width: 58ch; }
+
+.vip-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(1.25rem, 3vw, 2rem);
+}
+.vip-photo { position: relative; }
+.vip-photo img { width: 100%; aspect-ratio: 4/5; object-fit: cover; }
+.vip-photo figcaption {
+  margin-top: 0.9rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--wine);
+  font-weight: 600;
+}
+
+/* ---------- EXPERIENCIA (2-col split) ---------- */
+.experiencia {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 640px;
+}
+.experiencia-photo { position: relative; overflow: hidden; }
+.experiencia-photo img { width: 100%; height: 100%; object-fit: cover; min-height: 420px; }
+.experiencia-text {
+  background: var(--wine);
+  color: var(--white);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(2.5rem, 5vw, 5rem);
+}
+.experiencia-text .eyebrow { color: var(--gold); display: block; margin-bottom: 1.1rem; }
+.experiencia-text h2 { margin-bottom: 1.4rem; }
+.experiencia-text p { opacity: 0.9; max-width: 46ch; margin-bottom: 1rem; }
+.experiencia-text p:last-of-type { margin-bottom: 0; }
+
+/* ---------- ESPECIALIDADES ---------- */
+.especialidades-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(1.25rem, 3vw, 2rem);
+}
+.especialidad-card { background: var(--white); }
+.especialidad-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; }
+.especialidad-card .ecard-body { padding: 1.6rem 1.5rem 1.9rem; }
+.especialidad-card h3 { color: var(--wine); margin-bottom: 0.6rem; }
+.especialidad-card p { font-size: 0.92rem; opacity: 0.75; margin-bottom: 1.2rem; }
+.especialidad-card .btn { padding: 0.7rem 1.4rem; font-size: 0.72rem; }
+
+/* ---------- MODALS (shared) ---------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(15,8,7,0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+.modal-overlay.is-open { opacity: 1; visibility: visible; }
+.modal-card {
+  background: var(--white);
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  border-radius: 18px;
+  position: relative;
+  box-shadow: 0 40px 80px -20px rgba(0,0,0,0.5);
+  transform: translateY(16px) scale(0.98);
+  transition: transform 0.25s ease;
+}
+.modal-overlay.is-open .modal-card { transform: translateY(0) scale(1); }
+.modal-close {
+  position: absolute;
+  top: 0.9rem; right: 0.9rem;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: var(--white);
+  color: var(--wine);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: background 0.2s ease, color 0.2s ease;
+  z-index: 2;
+}
+.modal-close:hover { background: var(--wine); color: var(--white); }
+
+/* ---------- SPECIALTY MODAL ---------- */
+.specialty-modal { max-width: 560px; }
+.specialty-modal img { width: 100%; aspect-ratio: 16/10; object-fit: cover; border-radius: 18px 18px 0 0; }
+.specialty-modal-body { padding: clamp(1.5rem, 4vw, 2.5rem); }
+.specialty-modal-body h3 { color: var(--wine); margin-bottom: 0.9rem; }
+.specialty-modal-body p { opacity: 0.85; margin-bottom: 1.6rem; line-height: 1.7; }
+
+/* ---------- BODEGUITA MODAL ---------- */
+.bodeguita-modal {
+  max-width: 780px;
+  padding: clamp(1.75rem, 4vw, 3rem);
+  text-align: center;
+}
+.bodeguita-modal .eyebrow { color: var(--gold); display: block; margin-bottom: 0.6rem; }
+.bodeguita-modal h3 { color: var(--wine); margin-bottom: 0.8rem; }
+.bodeguita-modal > p { opacity: 0.75; max-width: 46ch; margin: 0 auto 2rem; }
+.bodeguita-gallery {
+  display: flex;
+  justify-content: center;
+  gap: clamp(0.75rem, 2vw, 1.25rem);
+  margin-bottom: 2rem;
+}
+.bodeguita-gallery figure {
+  width: clamp(110px, 22vw, 190px);
+  aspect-ratio: 9/16;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 18px 34px -12px rgba(0,0,0,0.45);
+  opacity: 0;
+  transform: translateY(28px) rotate(var(--rot, 0deg));
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.bodeguita-gallery figure:nth-child(1) { --rot: -6deg; transition-delay: 0.05s; }
+.bodeguita-gallery figure:nth-child(2) { --rot: 0deg; transition-delay: 0.18s; }
+.bodeguita-gallery figure:nth-child(3) { --rot: 6deg; transition-delay: 0.31s; }
+.modal-overlay.is-open .bodeguita-gallery figure { opacity: 1; transform: translateY(0) rotate(var(--rot, 0deg)); }
+.bodeguita-gallery img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* ---------- RESERVATION MODAL ---------- */
+.reservation-modal { max-width: 480px; padding: clamp(1.75rem, 4vw, 2.75rem); }
+.reservation-modal-header { text-align: center; margin-bottom: 1.8rem; }
+.reservation-modal-header .eyebrow { color: var(--gold); display: block; margin-bottom: 0.6rem; }
+.reservation-modal-header h3 { color: var(--wine); margin-bottom: 0.5rem; }
+.reservation-modal-header p { opacity: 0.75; font-size: 0.92rem; }
+.reservation-form .rf-field,
+.reservation-form .rf-row {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.modal-overlay.is-open .reservation-form .rf-field,
+.modal-overlay.is-open .reservation-form .rf-row { opacity: 1; transform: translateY(0); }
+.reservation-form .rf-field:nth-child(1) { transition-delay: 0.05s; }
+.reservation-form .rf-row:nth-child(2) { transition-delay: 0.12s; }
+.reservation-form .rf-row:nth-child(3) { transition-delay: 0.19s; }
+.reservation-form .rf-field:nth-child(4) { transition-delay: 0.26s; }
+.reservation-form button[type="submit"] { transition-delay: 0.33s; }
+.reservation-form { display: flex; flex-direction: column; gap: 1.1rem; }
+.reservation-form[hidden] { display: none; }
+.reservation-form .rf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+.reservation-form label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--wine);
+  margin-bottom: 0.45rem;
+}
+.reservation-form input,
+.reservation-form textarea {
+  width: 100%;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  color: var(--ink);
+  background: var(--cream);
+  border: 1.5px solid transparent;
+  border-radius: 10px;
+  padding: 0.7rem 0.9rem;
+  transition: border-color 0.2s ease;
+}
+.reservation-form input:focus,
+.reservation-form textarea:focus { outline: none; border-color: var(--wine); }
+.reservation-form textarea { resize: vertical; }
+.reservation-form button[type="submit"] { margin-top: 0.3rem; width: 100%; justify-content: center; }
+.rf-hint { font-size: 0.78rem; opacity: 0.6; text-align: center; }
+.reservation-success { text-align: center; padding: 1rem 0; }
+.reservation-success h3 { color: var(--wine); margin-bottom: 0.8rem; }
+.reservation-success p { opacity: 0.8; line-height: 1.7; margin-bottom: 1.6rem; }
+
+/* ---------- CLOSING CTA ---------- */
+.cta-final {
+  position: relative;
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(15,8,7,0.5), rgba(15,8,7,0.75)),
+              url('../assets/img/cta-mesa-elegante.jpg') center 25%/cover no-repeat;
+  color: var(--white);
+}
+.cta-final .eyebrow { color: var(--gold); display: block; margin-bottom: 1.1rem; }
+.cta-final h2 { margin-bottom: 1.6rem; }
+.cta-final p { opacity: 0.9; max-width: 480px; margin: 0 auto 2.2rem; }
+
+/* ---------- FOOTER ---------- */
+.footer {
+  background: var(--wine);
+  color: var(--white);
+  padding-top: clamp(3.5rem, 7vw, 6rem);
+}
+.footer-tagline {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  line-height: 1.25;
+  max-width: 780px;
+  margin: 0 auto clamp(3rem, 6vw, 5rem);
+  padding: 0 1.5rem;
+  text-align: center;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr 1.1fr;
+  gap: clamp(2rem, 4vw, 3rem);
+  padding-bottom: 3rem;
+  border-bottom: 1px solid rgba(255,250,243,0.18);
+}
+.footer-col .nav-wordmark { display: block; margin-bottom: 1rem; }
+.footer-col p.muted { opacity: 0.7; font-size: 0.9rem; max-width: 32ch; }
+.footer-social { display: flex; gap: 0.8rem; margin-top: 1.4rem; }
+.footer-social a {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,250,243,0.3);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--white);
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.footer-social a:hover { background: var(--gold); border-color: var(--gold); color: var(--wine-dark); }
+.footer-col h4 {
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.2rem;
+}
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+.footer-col ul a { opacity: 0.85; font-size: 0.92rem; }
+.footer-col ul a:hover { opacity: 1; text-decoration: underline; }
+
+.newsletter-form {
+  display: flex;
+  border-bottom: 1px solid rgba(255,250,243,0.5);
+  padding-bottom: 0.6rem;
+}
+.newsletter-form input {
+  background: transparent;
+  border: none;
+  color: var(--white);
+  font-family: var(--sans);
+  font-size: 0.92rem;
+  flex: 1;
+  padding: 0.4rem 0;
+}
+.newsletter-form input::placeholder { color: rgba(255,250,243,0.55); }
+.newsletter-form button {
+  background: none; border: none; color: var(--gold);
+  font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+}
+
+.legal-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1.6rem 0;
+  font-size: 0.78rem;
+  opacity: 0.65;
+}
+.legal-bar .credits { max-width: 700px; line-height: 1.7; }
+.legal-bar .credits a { text-decoration: underline; }
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 980px) {
+  .nav-links, .nav-actions .btn-outline-white { display: none; }
+  .nav-toggle { display: flex; }
+  .nav-actions .btn-solid-wine { display: none; }
+
+  .story { grid-template-columns: 1fr; }
+  .carta-grid { grid-template-columns: 1fr; }
+  .vip-row { grid-template-columns: 1fr; }
+  .experiencia { grid-template-columns: 1fr; }
+  .experiencia-photo img { min-height: 320px; }
+  .especialidades-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 600px) {
+  .footer-grid { grid-template-columns: 1fr; }
+  .legal-bar { flex-direction: column; align-items: flex-start; }
+  .mosaic { aspect-ratio: 4/5; }
+  .reservation-form .rf-row { grid-template-columns: 1fr; }
+  .bodeguita-gallery { flex-wrap: wrap; }
+  .bodeguita-gallery figure { width: clamp(96px, 40vw, 150px); }
+}
